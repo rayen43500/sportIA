@@ -1,0 +1,253 @@
+<app-header></app-header>
+
+<!-- Hero Section avec thème sport et healthy -->
+<div class="hero-section" style="background: linear-gradient(135deg, #6C63FF 0%, #FFD54F 100%); padding: 40px 0; margin-bottom: 30px; border-radius: 0 0 30px 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h1 style="color: white; font-weight: 700; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">Gestion des Activités</h1>
+        <p style="color: white; font-size: 1.2rem; opacity: 0.9;">Suivez et gérez vos activités sportives et votre mode de vie sain</p>
+      </div>
+      <div class="col-md-4 text-end">
+        <img src="assets/images/fitness-icon.png" alt="Fitness" style="max-width: 120px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1159/1159873.png'">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <!-- Barre d'outils avec tous les boutons -->
+  <div class="tools-bar mb-4" style="background-color: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+    <div class="row g-3">
+      <div class="col-md-3 col-sm-6">
+        <button class="btn w-100" style="background-color: #6C63FF; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(108, 99, 255, 0.2);">
+          <i class="fas fa-list me-2"></i> Lister toutes les activités
+        </button>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <button class="btn w-100" (click)="onAddActivity()" style="background-color: #4CAF50; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(76, 175, 80, 0.2);">
+          <i class="fas fa-plus me-2"></i> Ajouter une activité
+        </button>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <button class="btn w-100" style="background-color: #FF9800; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(255, 152, 0, 0.2);">
+          <i class="fas fa-edit me-2"></i> Modifier une activité
+        </button>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <button class="btn w-100" style="background-color: #F44336; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(244, 67, 54, 0.2);">
+          <i class="fas fa-trash me-2"></i> Supprimer une activité
+        </button>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <button class="btn w-100" style="background-color: #2196F3; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(33, 150, 243, 0.2);">
+          <i class="fas fa-info-circle me-2"></i> Voir les détails
+        </button>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <button class="btn w-100" style="background-color: #9C27B0; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(156, 39, 176, 0.2);">
+          <i class="fas fa-check-circle me-2"></i> Changer le statut
+        </button>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <button class="btn w-100" style="background-color: #00BCD4; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0, 188, 212, 0.2);">
+          <i class="fas fa-search me-2"></i> Filtrer/Rechercher
+        </button>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <button class="btn w-100" style="background-color: #FFD54F; color: #5D4037; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(255, 213, 79, 0.2);">
+          <i class="fas fa-chart-bar me-2"></i> Statistiques
+        </button>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <button class="btn w-100" (click)="openAIChat()" style="background-color: #9C27B0; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(156, 39, 176, 0.2);">
+          <i class="fas fa-robot me-2"></i> Chat IA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barre de recherche améliorée -->
+  <div class="search-bar mb-4" style="background-color: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+    <div class="input-group">
+      <span class="input-group-text" style="background-color: #6C63FF; color: white; border: none; border-radius: 10px 0 0 10px;">
+        <i class="fas fa-search"></i>
+      </span>
+      <input type="text" class="form-control" placeholder="Rechercher une activité..." 
+        [(ngModel)]="searchTerm" (input)="applyFilter()"
+        style="border: 2px solid #FFD54F; border-radius: 0 10px 10px 0; padding: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+    </div>
+  </div>
+
+  <!-- Liste des activités avec style amélioré -->
+  <div class="activities-container" style="background-color: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+    <h3 style="color: #6C63FF; font-weight: 700; margin-bottom: 20px; text-align: center;">Vos Activités</h3>
+    
+    <div *ngIf="filteredActivities.length > 0; else noResults" class="mt-4">
+      <!-- Cards Grid avec style amélioré -->
+      <div class="row">
+        <div *ngFor="let activity of filteredActivities" class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100" style="border: none; border-radius: 15px; background: linear-gradient(135deg, #FFF9F0 0%, #FFF8E7 100%); transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+            <div class="card-body" style="padding: 20px;">
+              <div class="activity-header d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title" style="color: #6C63FF; font-weight: bold; font-size: 1.2rem; margin: 0;">{{ activity.title }}</h5>
+                <span class="badge" style="background-color: #4CAF50; color: white; padding: 8px 12px; border-radius: 20px; font-weight: 500;">
+                  {{ activity.activityType.title || 'Non spécifié' }}
+                </span>
+              </div>
+              
+              <div class="activity-details">
+                <div class="detail-item d-flex align-items-center mb-2">
+                  <i class="fas fa-calendar-alt me-2" style="color: #FF9800;"></i>
+                  <span><strong>Date:</strong> {{ activity.ActivityDate | date: 'dd/MM/yyyy' }}</span>
+                </div>
+                <div class="detail-item d-flex align-items-center mb-2">
+                  <i class="fas fa-star me-2" style="color: #FFD54F;"></i>
+                  <span><strong>Réputation:</strong> {{ activity.reputation }}/5</span>
+                </div>
+                <div class="detail-item d-flex align-items-center mb-3">
+                  <i class="fas fa-clock me-2" style="color: #2196F3;"></i>
+                  <span><strong>Durée:</strong> {{ activity.duration }} minutes</span>
+                </div>
+              </div>
+
+              <div class="activity-actions d-flex justify-content-between mt-3">
+                <button class="btn" (click)="onEditActivity(activity.actId)" style="background-color: #FF9800; color: white; border-radius: 10px; padding: 8px 15px; font-weight: 500; transition: all 0.3s; box-shadow: 0 2px 4px rgba(255, 152, 0, 0.2);">
+                  <i class="fas fa-edit me-1"></i> Modifier
+                </button>
+                <button class="btn" (click)="onDeleteActivity(activity.actId)" style="background-color: #F44336; color: white; border-radius: 10px; padding: 8px 15px; font-weight: 500; transition: all 0.3s; box-shadow: 0 2px 4px rgba(244, 67, 54, 0.2);">
+                  <i class="fas fa-trash me-1"></i> Supprimer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination améliorée -->
+      <nav class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link"
+                    (click)="previousPage()"
+                    style="background-color: #6C63FF; border: none; color: white; padding: 10px 20px; border-radius: 10px 0 0 10px; font-weight: 500; transition: all 0.3s;">
+              <i class="fas fa-chevron-left me-1"></i> Précédent
+            </button>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link" style="background: none; border: none; color: #6C63FF; font-weight: 500; padding: 10px 20px;">
+              Page {{ currentPage }} / {{ totalPages }}
+            </span>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <button class="page-link"
+                    (click)="nextPage()"
+                    style="background-color: #6C63FF; border: none; color: white; padding: 10px 20px; border-radius: 0 10px 10px 0; font-weight: 500; transition: all 0.3s;">
+              Suivant <i class="fas fa-chevron-right ms-1"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Aucun résultat avec style amélioré -->
+    <ng-template #noResults>
+      <div class="text-center py-5">
+        <i class="fas fa-search" style="font-size: 3rem; color: #9E9E9E; margin-bottom: 20px;"></i>
+        <p class="text-muted" style="font-size: 1.2rem;">Aucune activité trouvée. Essayez de modifier vos critères de recherche.</p>
+      </div>
+    </ng-template>
+
+    <!-- Loading avec style amélioré -->
+    <ng-template #loading>
+      <div class="text-center py-5">
+        <div class="spinner-border" style="width: 3rem; height: 3rem; color: #6C63FF;" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <p class="mt-3" style="color: #6C63FF; font-weight: 500;">Chargement des activités...</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Modal pour ajouter une activité (conservé avec le style amélioré) -->
+<div class="modal fade" id="addActivityModal" tabindex="-1" aria-labelledby="addActivityModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: #FFF8E7; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: none;">
+      <div class="modal-header" style="border-bottom: 2px solid #FFD54F; padding: 20px; border-radius: 20px 20px 0 0;">
+        <h5 class="modal-title" id="addActivityModalLabel" style="color: #6C63FF; font-weight: bold; font-size: 1.5rem;">Ajouter une activité</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color: #6C63FF; opacity: 0.7;"></button>
+      </div>
+      <div class="modal-body" style="padding: 25px;">
+        <form #activityForm="ngForm" (ngSubmit)="onSubmit(activityForm)">
+          <!-- Titre -->
+          <div class="form-group mb-4">
+            <label for="title" style="color: #6C63FF; font-weight: 600; margin-bottom: 8px; display: block;">Titre</label>
+            <input type="text" class="form-control" id="title" name="title" [(ngModel)]="newActivity.title" required
+              style="border-radius: 12px; border: 2px solid #FFD54F; padding: 12px; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);"
+              placeholder="Entrez le titre de l'activité">
+          </div>
+
+          <!-- Date -->
+          <div class="form-group mb-4">
+            <label for="date" style="color: #6C63FF; font-weight: 600; margin-bottom: 8px; display: block;">Date</label>
+            <input type="date" class="form-control" id="date" name="date" [(ngModel)]="newActivity.ActivityDate" required
+              style="border-radius: 12px; border: 2px solid #FFD54F; padding: 12px; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+          </div>
+
+          <!-- Réputation -->
+          <div class="form-group mb-4">
+            <label for="reputation" style="color: #6C63FF; font-weight: 600; margin-bottom: 8px; display: block;">Réputation (0-5)</label>
+            <input type="number" class="form-control" id="reputation" name="reputation" [(ngModel)]="newActivity.reputation" required
+              min="0" max="5" style="border-radius: 12px; border: 2px solid #FFD54F; padding: 12px; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);"
+              placeholder="Note de 0 à 5">
+          </div>
+
+          <!-- Durée -->
+          <div class="form-group mb-4">
+            <label for="duration" style="color: #6C63FF; font-weight: 600; margin-bottom: 8px; display: block;">Durée (minutes)</label>
+            <input type="number" class="form-control" id="duration" name="duration" [(ngModel)]="newActivity.duration" required
+              min="0" style="border-radius: 12px; border: 2px solid #FFD54F; padding: 12px; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);"
+              placeholder="Durée en minutes">
+          </div>
+
+          <!-- Type d'activité -->
+          <div class="form-group mb-4">
+            <label for="activityType" style="color: #6C63FF; font-weight: 600; margin-bottom: 8px; display: block;">Type d'activité</label>
+            <select class="form-control" id="activityType" name="activityType" [(ngModel)]="selectedActivityType" required
+              style="border-radius: 12px; border: 2px solid #FFD54F; padding: 12px; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+              <option value="" disabled selected>Sélectionnez un type d'activité</option>
+              <option *ngFor="let type of activityTypes" [value]="type.actTypeId">{{type.title}}</option>
+            </select>
+          </div>
+
+          <div class="modal-footer" style="border-top: 2px solid #FFD54F; padding: 20px; border-radius: 0 0 20px 20px;">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" 
+              style="background-color: #9E9E9E; border: none; border-radius: 10px; padding: 10px 20px; font-weight: 500; transition: all 0.3s;">
+              Annuler
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="!activityForm.form.valid" 
+              style="background-color: #6C63FF; border: none; border-radius: 10px; padding: 10px 20px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);">
+              Ajouter
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour le chat IA -->
+<div class="modal fade" id="aiChatModal" tabindex="-1" aria-labelledby="aiChatModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aiChatModalLabel">Assistant IA</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <app-ai-chat></app-ai-chat>
+      </div>
+    </div>
+  </div>
+</div>

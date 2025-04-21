@@ -1,0 +1,94 @@
+<app-header></app-header>
+<br>
+<!-- add-edit-activities.component.html -->
+<div class="container mt-5" style="background-color: #FFF8E7; padding: 2rem; border-radius: 15px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);">
+  <h2 class="text-center" style="color: #6C63FF;">{{ isEditMode ? 'Modifier l\'activité' : 'Ajouter une activité' }}</h2>
+
+  <form (ngSubmit)="onSubmit()" #activityForm="ngForm">
+    <!-- Titre de l'activité -->
+    <div class="form-group">
+      <label for="title" style="color: #6C63FF;">Titre</label>
+      <input
+        type="text"
+        id="title"
+        class="form-control"
+        [(ngModel)]="activity.title"
+        name="title"
+        required
+        #title="ngModel"
+        style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;"
+      />
+      <div *ngIf="title.invalid && title.touched" class="text-danger">
+        Le titre est requis.
+      </div>
+    </div>
+
+    <!-- Date de l'activité -->
+    <div class="form-group">
+      <label for="activityDate" style="color: #6C63FF;">Date de l'activité</label>
+      <input
+        type="date"
+        id="activityDate"
+        class="form-control"
+        [(ngModel)]="activity.ActivityDate"
+        name="activityDate"
+        required
+        style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;"
+      />
+    </div>
+    
+    <!-- Affichage de la date formatée -->
+ 
+    <!-- Réputation -->
+    <div class="form-group">
+      <label for="reputation" style="color: #6C63FF;">Réputation</label>
+      <input
+        type="number"
+        id="reputation"
+        class="form-control"
+        [(ngModel)]="activity.reputation"
+        name="reputation"
+        required
+        min="0"
+        max="5"
+        style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;"
+      />
+    </div>
+
+    <!-- Durée -->
+    <div class="form-group">
+      <label for="duration" style="color: #6C63FF;">Durée (en minutes)</label>
+      <input
+        type="number"
+        id="duration"
+        class="form-control"
+        [(ngModel)]="activity.duration"
+        name="duration"
+        required
+        min="0"
+        style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;"
+      />
+    </div>
+
+    <!-- Type d'activité -->
+    <div class="form-group">
+      <label for="activityType" style="color: #6C63FF;">Type d'activité</label>
+      <select id="activityType" class="form-control" [(ngModel)]="activity.activityType.actTypeId" name="activityType" required style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;">
+        <option *ngFor="let type of activityTypes" [value]="type.actTypeId">
+          {{ type.title }}
+        </option>
+      </select>
+    </div>
+<br>
+    <!-- Boutons soumettre et annuler -->
+    <div class="form-group">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="activityForm.invalid"
+        style="background-color: #6C63FF; border: none; color: white; padding: 10px 20px; border-radius: 10px; font-weight: bold;">
+        {{ isEditMode ? 'Mettre à jour l\'activité' : 'Ajouter l\'activité' }}
+      </button>
+    </div>
+  </form>
+</div>

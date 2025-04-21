@@ -1,0 +1,84 @@
+.hero-section {
+  background: linear-gradient(135deg, #6C63FF 0%, #FFD54F 100%);
+  padding: 40px 0;
+  margin-bottom: 30px;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.tools-bar {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.activities-container {
+  background-color: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #FFF9F0 0%, #FFF8E7 100%);
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.activity-details {
+  .detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    i {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.activity-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.pagination {
+  .page-link {
+    background-color: #6C63FF;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: darken(#6C63FF, 10%);
+    }
+  }
+} 

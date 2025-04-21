@@ -1,0 +1,179 @@
+/**
+ * Custom CSS for the application
+ */
+
+/* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header styles */
+.header-area {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav li {
+    margin: 0 15px;
+    position: relative;
+}
+
+.nav a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav a:hover {
+    color: white;
+}
+
+.submenu {
+    position: relative;
+}
+
+.submenu ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    min-width: 200px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px 0;
+    z-index: 100;
+}
+
+.submenu:hover ul,
+.submenu ul.active {
+    display: block;
+}
+
+.submenu ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.submenu ul a {
+    color: #333;
+    padding: 8px 15px;
+    display: block;
+}
+
+.submenu ul a:hover {
+    background: #f8f9fa;
+    color: #3498db;
+}
+
+.menu-trigger {
+    display: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* Responsive styles */
+@media (max-width: 991px) {
+    .menu-trigger {
+        display: block;
+    }
+    
+    .nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #2c3e50;
+        flex-direction: column;
+        padding: 15px 0;
+    }
+    
+    .nav.active {
+        display: flex;
+    }
+    
+    .nav li {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .nav a {
+        padding: 10px 15px;
+        display: block;
+    }
+    
+    .submenu ul {
+        position: static;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: none;
+        display: none;
+    }
+    
+    .submenu ul.active {
+        display: block;
+    }
+    
+    .submenu ul a {
+        color: rgba(255, 255, 255, 0.9);
+        padding-left: 30px;
+    }
+    
+    .submenu ul a:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+}
+
+/* Footer styles */
+footer {
+    background: #2c3e50;
+    color: white;
+    padding: 30px 0;
+    margin-top: 50px;
+}
+
+/* Utility classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-5 {
+    margin-top: 3rem;
+}
+
+.mb-5 {
+    margin-bottom: 3rem;
+}
+
+.py-5 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+} 

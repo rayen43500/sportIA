@@ -1,0 +1,38 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <h3>Assistant IA</h3>
+    <button class="close-button" (click)="closeChat()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="chat-messages" #chatMessages>
+    <div *ngFor="let message of messages" 
+         [ngClass]="{'message': true, 'user-message': message.sender === 'user', 'ai-message': message.sender === 'ai'}">
+      <div class="message-content">
+        {{ message.content }}
+      </div>
+      <div class="message-timestamp">
+        {{ message.timestamp | date:'shortTime' }}
+      </div>
+    </div>
+
+    <div *ngIf="isTyping" class="typing-indicator">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <form [formGroup]="chatForm" (ngSubmit)="onSubmit()" class="chat-input">
+    <input type="text" 
+           formControlName="message" 
+           placeholder="Tapez votre message ici..."
+           [attr.disabled]="isTyping ? '' : null">
+    
+    <button type="submit" 
+            [disabled]="!chatForm.valid || isTyping">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </form>
+</div> 
