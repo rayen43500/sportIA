@@ -16,50 +16,20 @@
 </div>
 
 <div class="container mt-4">
-  <!-- Barre d'outils avec tous les boutons -->
+  <!-- Barre d'outils avec les boutons sélectionnés -->
   <div class="tools-bar mb-4" style="background-color: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
     <div class="row g-3">
-      <div class="col-md-3 col-sm-6">
-        <button class="btn w-100" style="background-color: #6C63FF; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(108, 99, 255, 0.2);">
-          <i class="fas fa-list me-2"></i> Lister toutes les activités
-        </button>
-      </div>
-      <div class="col-md-3 col-sm-6">
+      <div class="col-md-4">
         <button class="btn w-100" (click)="onAddActivity()" style="background-color: #4CAF50; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(76, 175, 80, 0.2);">
           <i class="fas fa-plus me-2"></i> Ajouter une activité
         </button>
       </div>
-      <div class="col-md-3 col-sm-6">
-        <button class="btn w-100" style="background-color: #FF9800; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(255, 152, 0, 0.2);">
-          <i class="fas fa-edit me-2"></i> Modifier une activité
-        </button>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <button class="btn w-100" style="background-color: #F44336; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(244, 67, 54, 0.2);">
-          <i class="fas fa-trash me-2"></i> Supprimer une activité
-        </button>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <button class="btn w-100" style="background-color: #2196F3; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(33, 150, 243, 0.2);">
-          <i class="fas fa-info-circle me-2"></i> Voir les détails
-        </button>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <button class="btn w-100" style="background-color: #9C27B0; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(156, 39, 176, 0.2);">
-          <i class="fas fa-check-circle me-2"></i> Changer le statut
-        </button>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <button class="btn w-100" style="background-color: #00BCD4; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0, 188, 212, 0.2);">
-          <i class="fas fa-search me-2"></i> Filtrer/Rechercher
-        </button>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <button class="btn w-100" style="background-color: #FFD54F; color: #5D4037; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(255, 213, 79, 0.2);">
+      <div class="col-md-4">
+        <button class="btn w-100" (click)="onViewStatistics()" style="background-color: #FFD54F; color: #5D4037; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(255, 213, 79, 0.2);">
           <i class="fas fa-chart-bar me-2"></i> Statistiques
         </button>
       </div>
-      <div class="col-md-3 col-sm-6">
+      <div class="col-md-4">
         <button class="btn w-100" (click)="openAIChat()" style="background-color: #9C27B0; color: white; border-radius: 10px; padding: 12px; font-weight: 500; transition: all 0.3s; box-shadow: 0 4px 6px rgba(156, 39, 176, 0.2);">
           <i class="fas fa-robot me-2"></i> Chat IA
         </button>
@@ -67,15 +37,70 @@
     </div>
   </div>
 
-  <!-- Barre de recherche améliorée -->
-  <div class="search-bar mb-4" style="background-color: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-    <div class="input-group">
-      <span class="input-group-text" style="background-color: #6C63FF; color: white; border: none; border-radius: 10px 0 0 10px;">
-        <i class="fas fa-search"></i>
-      </span>
-      <input type="text" class="form-control" placeholder="Rechercher une activité..." 
-        [(ngModel)]="searchTerm" (input)="applyFilter()"
-        style="border: 2px solid #FFD54F; border-radius: 0 10px 10px 0; padding: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+  <!-- Filtres et barre de recherche -->
+  <div class="filters-bar mb-4" style="background-color: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+    <h5 style="color: #6C63FF; font-weight: 600; margin-bottom: 15px;">Filtres</h5>
+    <div class="row g-3">
+      <!-- Barre de recherche -->
+      <div class="col-md-12 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" style="background-color: #6C63FF; color: white; border: none; border-radius: 10px 0 0 10px;">
+            <i class="fas fa-search"></i>
+          </span>
+          <input type="text" class="form-control" placeholder="Rechercher une activité..." 
+            [(ngModel)]="searchTerm" (input)="applyFilter()"
+            style="border: 2px solid #FFD54F; border-radius: 0 10px 10px 0; padding: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+        </div>
+      </div>
+      
+      <!-- Filtre par type d'activité -->
+      <div class="col-md-4">
+        <label for="filterActivityType" style="color: #6C63FF; font-weight: 500; margin-bottom: 5px;">Type d'activité</label>
+        <select class="form-control" id="filterActivityType" [(ngModel)]="filterActivityType" (change)="applyFilter()"
+          style="border-radius: 10px; border: 2px solid #FFD54F; padding: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+          <option [ngValue]="null">Tous les types</option>
+          <option *ngFor="let type of activityTypes" [ngValue]="type.actTypeId">{{type.title}}</option>
+        </select>
+      </div>
+      
+      <!-- Filtre par date -->
+      <div class="col-md-4">
+        <label for="filterDateStart" style="color: #6C63FF; font-weight: 500; margin-bottom: 5px;">Date début</label>
+        <input type="date" class="form-control" id="filterDateStart" [(ngModel)]="filterDateStart" (change)="applyFilter()"
+          style="border-radius: 10px; border: 2px solid #FFD54F; padding: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+      </div>
+      
+      <div class="col-md-4">
+        <label for="filterDateEnd" style="color: #6C63FF; font-weight: 500; margin-bottom: 5px;">Date fin</label>
+        <input type="date" class="form-control" id="filterDateEnd" [(ngModel)]="filterDateEnd" (change)="applyFilter()"
+          style="border-radius: 10px; border: 2px solid #FFD54F; padding: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+      </div>
+      
+      <!-- Filtre par réputation -->
+      <div class="col-md-6">
+        <label for="filterReputation" style="color: #6C63FF; font-weight: 500; margin-bottom: 5px;">Réputation minimum</label>
+        <div class="d-flex align-items-center">
+          <input type="range" class="form-range flex-grow-1 me-2" id="filterReputation" min="0" max="5" step="1" 
+            [(ngModel)]="filterReputation" (change)="applyFilter()">
+          <span class="badge bg-primary" style="background-color: #6C63FF !important; min-width: 30px; text-align: center;">
+            {{filterReputation}}
+          </span>
+        </div>
+      </div>
+      
+      <!-- Filtre par durée -->
+      <div class="col-md-6">
+        <label for="filterDuration" style="color: #6C63FF; font-weight: 500; margin-bottom: 5px;">Durée maximum (minutes)</label>
+        <input type="number" class="form-control" id="filterDuration" min="0" [(ngModel)]="filterDuration" (change)="applyFilter()"
+          style="border-radius: 10px; border: 2px solid #FFD54F; padding: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+      </div>
+      
+      <!-- Bouton réinitialiser les filtres -->
+      <div class="col-md-12 mt-3">
+        <button class="btn" (click)="resetFilters()" style="background-color: #9E9E9E; color: white; border-radius: 10px; padding: 10px 20px; font-weight: 500; transition: all 0.3s;">
+          <i class="fas fa-sync-alt me-2"></i> Réinitialiser les filtres
+        </button>
+      </div>
     </div>
   </div>
 

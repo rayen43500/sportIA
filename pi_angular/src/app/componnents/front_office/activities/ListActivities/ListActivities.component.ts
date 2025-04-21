@@ -21,6 +21,14 @@ export class ListActivitiesComponent implements OnInit {
   currentPage: number = 1;
   totalPages: number = 1;
   itemsPerPage: number = 6; // Nombre d'éléments par page
+  
+  // Filter properties
+  filterActivityType: number | null = null;
+  filterDateStart: string | null = null;
+  filterDateEnd: string | null = null;
+  filterReputation: number = 0;
+  filterDuration: number | null = null;
+
   newActivity: Activity = {
     actId: 0,
     title: '',
@@ -113,16 +121,66 @@ export class ListActivitiesComponent implements OnInit {
   }
 
   applyFilter(): void {
-    if (!this.searchTerm.trim()) {
+    if (!this.searchTerm.trim() && 
+        this.filterActivityType === null && 
+        this.filterDateStart === null && 
+        this.filterDateEnd === null && 
+        this.filterReputation === 0 && 
+        this.filterDuration === null) {
       this.filteredActivities = [...this.activities];
     } else {
-      const searchTermLower = this.searchTerm.toLowerCase();
-      this.filteredActivities = this.activities.filter(activity => 
-        activity.title.toLowerCase().includes(searchTermLower) ||
-        (activity.activityType && activity.activityType.title && 
-         activity.activityType.title.toLowerCase().includes(searchTermLower))
-      );
+      const searchTermLower = this.searchTerm.toLowerCase().trim();
+      
+      this.filteredActivities = this.activities.filter(activity => {
+        // Text search filter
+        const textMatch = !searchTermLower || 
+          activity.title.toLowerCase().includes(searchTermLower) || 
+          (activity.activityType && activity.activityType.title && 
+           activity.activityType.title.toLowerCase().includes(searchTermLower));
+        
+        // Activity type filter
+        const typeMatch = this.filterActivityType === null || 
+          (activity.activityType && activity.activityType.actTypeId === this.filterActivityType);
+        
+        // Date range filter
+        let dateMatch = true;
+        const activityDate = new Date(activity.ActivityDate);
+        
+        if (this.filterDateStart) {
+          const startDate = new Date(this.filterDateStart);
+          startDate.setHours(0, 0, 0, 0);
+          dateMatch = dateMatch && activityDate >= startDate;
+        }
+        
+        if (this.filterDateEnd) {
+          const endDate = new Date(this.filterDateEnd);
+          endDate.setHours(23, 59, 59, 999);
+          dateMatch = dateMatch && activityDate <= endDate;
+        }
+        
+        // Reputation filter
+        const reputationMatch = activity.reputation >= this.filterReputation;
+        
+        // Duration filter
+        const durationMatch = this.filterDuration === null || activity.duration <= this.filterDuration;
+        
+        // All filters must pass
+        return textMatch && typeMatch && dateMatch && reputationMatch && durationMatch;
+      });
     }
+    
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  resetFilters(): void {
+    this.searchTerm = '';
+    this.filterActivityType = null;
+    this.filterDateStart = null;
+    this.filterDateEnd = null;
+    this.filterReputation = 0;
+    this.filterDuration = null;
+    this.filteredActivities = [...this.activities];
     this.currentPage = 1;
     this.updatePagination();
   }
