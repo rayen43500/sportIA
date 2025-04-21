@@ -216,9 +216,12 @@
             <label for="activityType" style="color: #6C63FF; font-weight: 600; margin-bottom: 8px; display: block;">Type d'activité</label>
             <select class="form-control" id="activityType" name="activityType" [(ngModel)]="selectedActivityType" required
               style="border-radius: 12px; border: 2px solid #FFD54F; padding: 12px; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-              <option value="" disabled selected>Sélectionnez un type d'activité</option>
-              <option *ngFor="let type of activityTypes" [value]="type.actTypeId">{{type.title}}</option>
+              <option [ngValue]="null" disabled>Sélectionnez un type d'activité</option>
+              <option *ngFor="let type of activityTypes" [ngValue]="type.actTypeId">{{type.title}}</option>
             </select>
+            <div *ngIf="activityTypes.length === 0" class="alert alert-warning mt-2">
+              Aucun type d'activité disponible. Veuillez en créer un d'abord.
+            </div>
           </div>
 
           <div class="modal-footer" style="border-top: 2px solid #FFD54F; padding: 20px; border-radius: 0 0 20px 20px;">

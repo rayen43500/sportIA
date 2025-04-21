@@ -5,7 +5,6 @@ import { ActivityType } from 'src/app/models/activities/activityType.model';
 import { ActivityService } from 'src/app/services/activities/Activity.service';
 import { NgForm } from '@angular/forms';
 import { ActivityTypeService } from 'src/app/services/activities/ActivityType.service';
-import { AiChatComponent } from './ai-chat/ai-chat.component';
 
 declare var bootstrap: any;
 
@@ -30,7 +29,7 @@ export class ListActivitiesComponent implements OnInit {
     duration: 0,
     activityType: {} as ActivityType
   };
-  selectedActivityType: number = 0;
+  selectedActivityType: number | null = null;
   private modal: any;
   isLoading: boolean = false;
 
@@ -69,11 +68,22 @@ export class ListActivitiesComponent implements OnInit {
   }
 
   loadActivityTypes(): void {
-    this.activityService.getAllActivityTypes().subscribe({
+    this.activityTypeService.getAllActivityTypes().subscribe({
       next: (data) => {
         this.activityTypes = data;
+        console.log('Activity types loaded:', this.activityTypes);
       },
-      error: (err) => console.error('Erreur lors du chargement des types d\'activités', err)
+      error: (err) => {
+        console.error('Erreur lors du chargement des types d\'activités', err);
+        // Use the ActivityService as fallback if ActivityTypeService fails
+        this.activityService.getAllActivityTypes().subscribe({
+          next: (data) => {
+            this.activityTypes = data;
+            console.log('Activity types loaded from ActivityService:', this.activityTypes);
+          },
+          error: (fallbackErr) => console.error('Erreur lors du chargement des types d\'activités (fallback)', fallbackErr)
+        });
+      }
     });
   }
 
@@ -127,7 +137,12 @@ export class ListActivitiesComponent implements OnInit {
       duration: 0,
       activityType: {} as ActivityType
     };
-    this.selectedActivityType = 0;
+    this.selectedActivityType = null;
+    
+    // Ensure activity types are loaded
+    if (this.activityTypes.length === 0) {
+      this.loadActivityTypes();
+    }
     
     // Utiliser une approche plus robuste pour ouvrir la modale
     setTimeout(() => {
@@ -145,9 +160,13 @@ export class ListActivitiesComponent implements OnInit {
 
   onSubmit(form: NgForm): void {
     if (form.valid) {
-      const selectedType = this.activityTypes.find(type => type.actTypeId === this.selectedActivityType);
+      // Convert selectedActivityType to number to ensure type consistency
+      const activityTypeId = Number(this.selectedActivityType);
+      const selectedType = this.activityTypes.find(type => type.actTypeId === activityTypeId);
+      
       if (!selectedType) {
-        console.error('Type d\'activité non trouvé');
+        console.error('Type d\'activité non trouvé', activityTypeId);
+        console.log('Available types:', this.activityTypes);
         return;
       }
 
@@ -156,7 +175,7 @@ export class ListActivitiesComponent implements OnInit {
         activityType: selectedType
       };
 
-      this.activityService.createActivity(activityToCreate, this.selectedActivityType).subscribe({
+      this.activityService.createActivity(activityToCreate, activityTypeId).subscribe({
         next: (response) => {
           console.log('Activité créée avec succès', response);
           this.modal.hide();
@@ -170,7 +189,7 @@ export class ListActivitiesComponent implements OnInit {
             duration: 0,
             activityType: {} as ActivityType
           };
-          this.selectedActivityType = 0;
+          this.selectedActivityType = null;
         },
         error: (err) => {
           console.error('Erreur lors de la création de l\'activité', err);
