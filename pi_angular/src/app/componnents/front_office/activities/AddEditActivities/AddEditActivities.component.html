@@ -30,15 +30,18 @@
         type="date"
         id="activityDate"
         class="form-control"
-        [(ngModel)]="activity.ActivityDate"
+        [ngModel]="activity.activityDate"
+        (ngModelChange)="activity.activityDate = $event"
         name="activityDate"
         required
         style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;"
       />
+      <!-- Affichage de la date formatée pour référence -->
+      <small *ngIf="activity.activityDate" class="text-muted">
+        Format de date: {{activity.activityDate}}
+      </small>
     </div>
     
-    <!-- Affichage de la date formatée -->
- 
     <!-- Réputation -->
     <div class="form-group">
       <label for="reputation" style="color: #6C63FF;">Réputation</label>

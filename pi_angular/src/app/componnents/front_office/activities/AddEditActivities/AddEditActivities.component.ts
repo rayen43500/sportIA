@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Activity } from 'src/app/models/activities/activity.model';
 import { ActivityType } from 'src/app/models/activities/activityType.model';
@@ -11,7 +11,7 @@ import { ActivityService } from 'src/app/services/activities/Activity.service';
 })
 export class AddEditActivitiesComponent  {
 
-  activity: Activity = { actId: 0, title: '', ActivityDate: new Date(), reputation: 0, duration: 0,  activityType: {
+  activity: Activity = { actId: 0, title: '', activityDate: new Date(), reputation: 0, duration: 0,  activityType: {
     actTypeId: 0,
     title: '',             // Correspond à la propriété 'Title' en majuscule
     description: '',
@@ -89,7 +89,17 @@ formatDate(date: Date): string {
     this.activityService.getActivityById(this.activityId).subscribe({
       next: (data) => {
         this.activity = data;
-      
+        
+        // Format the date for the HTML date input (which requires YYYY-MM-DD)
+        if (this.activity && this.activity.activityDate) {
+          // Convert string date to Date object if needed
+          const activityDate = typeof this.activity.activityDate === 'string' 
+            ? new Date(this.activity.activityDate) 
+            : this.activity.activityDate;
+            
+          // Format the date as YYYY-MM-DD for the HTML date input
+          this.activity.activityDate = this.formatDateForInput(activityDate);
+        }
       },
       error: (err) => {
         console.error('Erreur lors du chargement de l\'activité', err);
@@ -97,8 +107,27 @@ formatDate(date: Date): string {
     });
   }
 
+  // Format a date as YYYY-MM-DD for HTML date input
+  formatDateForInput(date: Date): any {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return `${year}-${month}-${day}`;
+  }
+
   // Soumettre le formulaire pour ajouter ou modifier une activité
   onSubmit(): void {
+    // Ensure date is properly formatted for the backend
+    if (this.activity.activityDate && typeof this.activity.activityDate === 'string') {
+      // If it's already in YYYY-MM-DD format from the date input, create a proper Date object
+      this.activity.activityDate = new Date(this.activity.activityDate);
+    }
+    
     if (this.isEditMode) {
       this.updateActivity(); // Modifier l'activité existante
     } else {

@@ -32,7 +32,7 @@ export class ListActivitiesComponent implements OnInit {
   newActivity: Activity = {
     actId: 0,
     title: '',
-    ActivityDate: new Date(),
+    activityDate: new Date(),
     reputation: 0,
     duration: 0,
     activityType: {} as ActivityType
@@ -144,16 +144,18 @@ export class ListActivitiesComponent implements OnInit {
         
         // Date range filter
         let dateMatch = true;
-        const activityDate = new Date(activity.ActivityDate);
+        const activityDate = new Date(activity.activityDate);
         
-        if (this.filterDateStart) {
+        if (this.filterDateStart && this.filterDateStart.trim() !== '') {
           const startDate = new Date(this.filterDateStart);
+          // Clear time part to compare only dates
           startDate.setHours(0, 0, 0, 0);
           dateMatch = dateMatch && activityDate >= startDate;
         }
         
-        if (this.filterDateEnd) {
+        if (this.filterDateEnd && this.filterDateEnd.trim() !== '') {
           const endDate = new Date(this.filterDateEnd);
+          // Set time to end of day to include the end date
           endDate.setHours(23, 59, 59, 999);
           dateMatch = dateMatch && activityDate <= endDate;
         }
@@ -190,7 +192,7 @@ export class ListActivitiesComponent implements OnInit {
     this.newActivity = {
       actId: 0,
       title: '',
-      ActivityDate: new Date(),
+      activityDate: new Date(),
       reputation: 0,
       duration: 0,
       activityType: {} as ActivityType
@@ -228,12 +230,31 @@ export class ListActivitiesComponent implements OnInit {
         return;
       }
 
+      // Convert date string to desired format (if date is a string from the form)
+      let formattedDate: string;
+      
+      if (typeof this.newActivity.activityDate === 'string') {
+        formattedDate = this.newActivity.activityDate;
+      } else {
+        formattedDate = this.formatDateToISO(this.newActivity.activityDate);
+      }
+
+      // Create the activity object with both necessary properties
       const activityToCreate: Activity = {
         ...this.newActivity,
+        activityDate: new Date(formattedDate),
         activityType: selectedType
       };
 
-      this.activityService.createActivity(activityToCreate, activityTypeId).subscribe({
+      // Add additional property for backend compatibility
+      const requestPayload = {
+        ...activityToCreate,
+        activityDate: formattedDate // Add camelCase version for backend
+      };
+
+      console.log('Sending activity to server:', requestPayload);
+
+      this.activityService.createActivity(requestPayload as any, activityTypeId).subscribe({
         next: (response) => {
           console.log('Activité créée avec succès', response);
           this.modal.hide();
@@ -242,7 +263,7 @@ export class ListActivitiesComponent implements OnInit {
           this.newActivity = {
             actId: 0,
             title: '',
-            ActivityDate: new Date(),
+            activityDate: new Date(),
             reputation: 0,
             duration: 0,
             activityType: {} as ActivityType
@@ -256,9 +277,22 @@ export class ListActivitiesComponent implements OnInit {
     }
   }
 
+  // Helper function to format a date to ISO format (yyyy-MM-dd)
+  private formatDateToISO(date: Date): string {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
   onEditActivity(id: number): void {
     // Rediriger vers la page d'édition avec l'ID de l'activité
-    this.router.navigate([`/activities/edit/${id}`]);
+    this.router.navigate([`/add-edit/${id}`]);
   }
 
   onDeleteActivity(id: number): void {

@@ -124,7 +124,7 @@
               <div class="activity-details">
                 <div class="detail-item d-flex align-items-center mb-2">
                   <i class="fas fa-calendar-alt me-2" style="color: #FF9800;"></i>
-                  <span><strong>Date:</strong> {{ activity.ActivityDate | date: 'dd/MM/yyyy' }}</span>
+                  <span><strong>Date:</strong> {{ activity.activityDate | date: 'dd/MM/yyyy' }}</span>
                 </div>
                 <div class="detail-item d-flex align-items-center mb-2">
                   <i class="fas fa-star me-2" style="color: #FFD54F;"></i>
@@ -216,7 +216,10 @@
           <!-- Date -->
           <div class="form-group mb-4">
             <label for="date" style="color: #6C63FF; font-weight: 600; margin-bottom: 8px; display: block;">Date</label>
-            <input type="date" class="form-control" id="date" name="date" [(ngModel)]="newActivity.ActivityDate" required
+            <input type="date" class="form-control" id="date" name="date" 
+              [ngModel]="newActivity.activityDate | date:'yyyy-MM-dd'" 
+              (ngModelChange)="newActivity.activityDate = $event"
+              required
               style="border-radius: 12px; border: 2px solid #FFD54F; padding: 12px; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
           </div>
 

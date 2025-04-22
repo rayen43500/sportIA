@@ -17,7 +17,34 @@ getAllActivityTypes(): Observable<ActivityType[]> {
 }
 // Créer une activité
 createActivity(activity: Activity, activityTypeId: number): Observable<Activity> {
-  return this.http.post<Activity>(`${this.baseUrl}/create/${activityTypeId}`, activity);
+  console.log('Activity service - sending activity to API:', JSON.stringify(activity));
+  console.log('Activity date type:', typeof activity.activityDate);
+  
+  // Create a plain object to send to the backend
+  const activityToSend = {
+    ...activity,
+    // Ensure both camelCase and PascalCase versions of the date are sent
+    activityDate: activity.activityDate instanceof Date ? 
+      this.formatDate(activity.activityDate) : 
+      activity.activityDate,
+  };
+  
+  console.log('Formatted activity to send:', JSON.stringify(activityToSend));
+  
+  return this.http.post<Activity>(`${this.baseUrl}/create/${activityTypeId}`, activityToSend);
+}
+
+// Helper method to format date as yyyy-MM-dd
+private formatDate(date: Date): string {
+  const d = new Date(date);
+  let month = '' + (d.getMonth() + 1);
+  let day = '' + d.getDate();
+  const year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
 }
 
 getAllActivities(): Observable<Activity[]> {
