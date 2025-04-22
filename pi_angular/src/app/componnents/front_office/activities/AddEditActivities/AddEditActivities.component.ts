@@ -26,13 +26,14 @@ export class AddEditActivitiesComponent  {
   }};
   activityTypeId: number = 0; // ID du type d'activité à associer
   isEditMode: boolean = false; // Détecte si on est en mode modification
+  isViewMode: boolean = false; // Détecte si on est en mode visualisation
   activityId: number = 0; // L'ID de l'activité à modifier (si présent)
   activityTypes: ActivityType[] = [];  // Liste des types d'activités
 
   constructor(
     private activityService: ActivityService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -44,10 +45,13 @@ export class AddEditActivitiesComponent  {
       this.activityId = params['id']; // Récupère l'ID de l'activité depuis les paramètres de l'URL
 
       if (this.activityId) {
-        this.isEditMode = true;
-        this.loadActivity(); // Charger l'activité à modifier
+        // Determine if we're in view mode or edit mode based on the URL
+        this.isViewMode = this.router.url.includes('/activities/details/');
+        this.isEditMode = !this.isViewMode && this.activityId > 0;
+        this.loadActivity(); // Charger l'activité à modifier ou visualiser
       } else {
         this.isEditMode = false; // Ajouter une nouvelle activité
+        this.isViewMode = false;
       }
     });
   }

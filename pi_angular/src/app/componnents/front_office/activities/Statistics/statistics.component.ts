@@ -2,10 +2,7 @@ import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angula
 import { ActivityService } from 'src/app/services/activities/Activity.service';
 import { Activity } from 'src/app/models/activities/activity.model';
 import { ActivityType } from 'src/app/models/activities/activityType.model';
-import { Chart, registerables, ChartType } from 'chart.js';
-
-// Register all Chart.js components
-Chart.register(...registerables);
+import { Chart } from 'chart.js/auto';
 
 @Component({
   selector: 'app-statistics',
@@ -123,7 +120,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit {
     
     // Create chart
     this.activityTypeChart = new Chart(this.activityTypeChartRef.nativeElement, {
-      type: 'pie' as ChartType,
+      type: 'pie',
       data: {
         labels: labels,
         datasets: [{
@@ -184,7 +181,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit {
     const data = Object.values(durationRanges);
     
     this.durationChart = new Chart(this.durationChartRef.nativeElement, {
-      type: 'bar' as ChartType,
+      type: 'bar',
       data: {
         labels: labels,
         datasets: [{
@@ -232,7 +229,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit {
     const data = Object.values(reputationCount);
     
     this.reputationChart = new Chart(this.reputationChartRef.nativeElement, {
-      type: 'bar' as ChartType,
+      type: 'bar',
       data: {
         labels: labels,
         datasets: [{
@@ -278,7 +275,7 @@ export class StatisticsComponent implements OnInit, AfterViewInit {
     });
     
     this.monthlyActivityChart = new Chart(this.monthlyActivityChartRef.nativeElement, {
-      type: 'line' as ChartType,
+      type: 'line',
       data: {
         labels: months,
         datasets: [{

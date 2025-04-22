@@ -340,4 +340,9 @@ export class ListActivitiesComponent implements OnInit {
       modal.show();
     }
   }
+
+  onViewActivityDetails(id: number): void {
+    // Navigate to activity details page
+    this.router.navigate(['/activities/details', id]);
+  }
 }

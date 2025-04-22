@@ -112,7 +112,9 @@
       <!-- Cards Grid avec style amélioré -->
       <div class="row">
         <div *ngFor="let activity of filteredActivities" class="col-md-6 col-lg-4 mb-4">
-          <div class="card h-100" style="border: none; border-radius: 15px; background: linear-gradient(135deg, #FFF9F0 0%, #FFF8E7 100%); transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+          <div class="card h-100" style="border: none; border-radius: 15px; background: linear-gradient(135deg, #FFF9F0 0%, #FFF8E7 100%); transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05); cursor: pointer;" (click)="onViewActivityDetails(activity.actId)" 
+          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.1)';" 
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.05)';">
             <div class="card-body" style="padding: 20px;">
               <div class="activity-header d-flex justify-content-between align-items-center mb-3">
                 <h5 class="card-title" style="color: #6C63FF; font-weight: bold; font-size: 1.2rem; margin: 0;">{{ activity.title }}</h5>
@@ -136,7 +138,7 @@
                 </div>
               </div>
 
-              <div class="activity-actions d-flex justify-content-between mt-3">
+              <div class="activity-actions d-flex justify-content-between mt-3" (click)="$event.stopPropagation()">
                 <button class="btn" (click)="onEditActivity(activity.actId)" style="background-color: #FF9800; color: white; border-radius: 10px; padding: 8px 15px; font-weight: 500; transition: all 0.3s; box-shadow: 0 2px 4px rgba(255, 152, 0, 0.2);">
                   <i class="fas fa-edit me-1"></i> Modifier
                 </button>

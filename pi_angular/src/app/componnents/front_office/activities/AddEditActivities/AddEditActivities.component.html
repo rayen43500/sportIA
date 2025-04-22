@@ -2,7 +2,9 @@
 <br>
 <!-- add-edit-activities.component.html -->
 <div class="container mt-5" style="background-color: #FFF8E7; padding: 2rem; border-radius: 15px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);">
-  <h2 class="text-center" style="color: #6C63FF;">{{ isEditMode ? 'Modifier l\'activité' : 'Ajouter une activité' }}</h2>
+  <h2 class="text-center" style="color: #6C63FF;">
+    {{ isViewMode ? 'Détails de l\'activité' : (isEditMode ? 'Modifier l\'activité' : 'Ajouter une activité') }}
+  </h2>
 
   <form (ngSubmit)="onSubmit()" #activityForm="ngForm">
     <!-- Titre de l'activité -->
@@ -17,8 +19,9 @@
         required
         #title="ngModel"
         style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;"
+        [readonly]="isViewMode"
       />
-      <div *ngIf="title.invalid && title.touched" class="text-danger">
+      <div *ngIf="title.invalid && title.touched && !isViewMode" class="text-danger">
         Le titre est requis.
       </div>
     </div>
@@ -35,6 +38,7 @@
         name="activityDate"
         required
         style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;"
+        [readonly]="isViewMode"
       />
       <!-- Affichage de la date formatée pour référence -->
       <small *ngIf="activity.activityDate" class="text-muted">
@@ -55,6 +59,7 @@
         min="0"
         max="5"
         style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;"
+        [readonly]="isViewMode"
       />
     </div>
 
@@ -70,13 +75,14 @@
         required
         min="0"
         style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;"
+        [readonly]="isViewMode"
       />
     </div>
 
     <!-- Type d'activité -->
     <div class="form-group">
       <label for="activityType" style="color: #6C63FF;">Type d'activité</label>
-      <select id="activityType" class="form-control" [(ngModel)]="activity.activityType.actTypeId" name="activityType" required style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;">
+      <select id="activityType" class="form-control" [(ngModel)]="activity.activityType.actTypeId" name="activityType" required style="border-radius: 10px; border: 1px solid #ddd; padding: 10px;" [disabled]="isViewMode">
         <option *ngFor="let type of activityTypes" [value]="type.actTypeId">
           {{ type.title }}
         </option>
@@ -84,13 +90,31 @@
     </div>
 <br>
     <!-- Boutons soumettre et annuler -->
-    <div class="form-group">
+    <div class="form-group d-flex" [ngClass]="{'justify-content-between': !isViewMode, 'justify-content-center': isViewMode}">
       <button
+        type="button"
+        class="btn"
+        style="background-color: #9E9E9E; border: none; color: white; padding: 10px 20px; border-radius: 10px; font-weight: bold;"
+        (click)="router.navigate(['/ListActivity'])">
+        Retour
+      </button>
+      
+      <button
+        *ngIf="!isViewMode"
         type="submit"
         class="btn btn-primary"
         [disabled]="activityForm.invalid"
         style="background-color: #6C63FF; border: none; color: white; padding: 10px 20px; border-radius: 10px; font-weight: bold;">
         {{ isEditMode ? 'Mettre à jour l\'activité' : 'Ajouter l\'activité' }}
+      </button>
+      
+      <button
+        *ngIf="isViewMode"
+        type="button"
+        class="btn btn-primary"
+        style="background-color: #FF9800; border: none; color: white; padding: 10px 20px; border-radius: 10px; font-weight: bold; margin-left: 10px;"
+        (click)="router.navigate(['/add-edit', activityId])">
+        Modifier
       </button>
     </div>
   </form>
