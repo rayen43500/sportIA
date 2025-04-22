@@ -16,6 +16,7 @@ import { ListActivitiesComponent } from './componnents/front_office/activities/L
 import { AddEditActivitiesComponent } from './componnents/front_office/activities/AddEditActivities/AddEditActivities.component';
 import { AiChatComponent } from './componnents/front_office/activities/ListActivities/ai-chat/ai-chat.component';
 import { CommonModule } from '@angular/common';
+import { StatisticsComponent } from './componnents/front_office/activities/Statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { CommonModule } from '@angular/common';
     ListTypeActivityComponent,
     ListActivitiesComponent,
     AddEditActivitiesComponent,
-    AiChatComponent
+    AiChatComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,

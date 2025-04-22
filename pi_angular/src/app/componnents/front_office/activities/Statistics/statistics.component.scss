@@ -1,0 +1,78 @@
+.stats-cards {
+  .card {
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    
+    &:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card-body {
+      position: relative;
+      z-index: 1;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150px;
+      height: 150px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50%, -50%);
+      z-index: 0;
+    }
+  }
+}
+
+.charts-section {
+  .card {
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+  
+  canvas {
+    max-height: 300px;
+  }
+}
+
+// Animation pour les valeurs de statistiques
+.stat-value {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Ajouter un délai à chaque carte pour une animation séquentielle
+.col-md-6:nth-child(1) .stat-value { animation-delay: 0.1s; }
+.col-md-6:nth-child(2) .stat-value { animation-delay: 0.2s; }
+.col-md-6:nth-child(3) .stat-value { animation-delay: 0.3s; }
+.col-md-6:nth-child(4) .stat-value { animation-delay: 0.4s; }
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .charts-section canvas {
+    max-height: 250px;
+  }
+  
+  .stats-cards .card {
+    margin-bottom: 15px;
+  }
+} 

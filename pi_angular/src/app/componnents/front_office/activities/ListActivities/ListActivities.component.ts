@@ -321,9 +321,8 @@ export class ListActivitiesComponent implements OnInit {
   }
 
   onViewStatistics(): void {
-    // Logique pour afficher les statistiques
-    // Cette méthode devrait être implémentée selon les besoins spécifiques
-    console.log('Afficher les statistiques');
+    // Navigate to the statistics page
+    this.router.navigate(['/statistics']);
   }
 
   onListAllActivities(): void {
