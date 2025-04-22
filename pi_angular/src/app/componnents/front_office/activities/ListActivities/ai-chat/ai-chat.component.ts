@@ -31,9 +31,9 @@ export class AiChatComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     // Ajouter un message de bienvenue
-    this.addMessage('Bonjour ! Je suis votre assistant IA propulsé par Gemini. Comment puis-je vous aider ?', 'ai');
+    this.addMessage('Bonjour ! Je suis votre assistant IA spécialisé dans les activités sportives et le mode de vie sain. Comment puis-je vous aider aujourd\'hui ?', 'ai');
     
-    // Démonstration de l'API Gemini au démarrage
+    // Démonstration de l'API Gemini au démarrage avec une question pertinente sur les activités sportives
     this.demonstrateGeminiApi();
   }
 
@@ -90,13 +90,19 @@ export class AiChatComponent implements OnInit, AfterViewChecked {
     this.isTyping = true;
     
     setTimeout(() => {
-      this.geminiApiService.generateContent("Explique comment fonctionne l'IA en quelques mots").subscribe({
+      const prompt = `
+        Tu es un assistant spécialisé dans la gestion des activités sportives et le mode de vie sain.
+        Fournir une brève explication (maximum 3 phrases) sur l'importance de suivre régulièrement ses activités physiques et comment cela contribue à un mode de vie sain.
+        Donne aussi un conseil pratique pour débutants.
+      `;
+      
+      this.geminiApiService.generateContent(prompt).subscribe({
         next: (response) => {
           this.addMessage(response, 'ai');
         },
         error: (error) => {
           console.error('Erreur lors de la démonstration:', error);
-          this.addMessage("L'IA fonctionne en analysant des données, en identifiant des modèles et en prenant des décisions basées sur l'apprentissage automatique.", 'ai');
+          this.addMessage("Suivre régulièrement vos activités physiques est essentiel pour maintenir une bonne santé, améliorer votre humeur et réduire les risques de maladies chroniques. Notre application vous aide à planifier, suivre et analyser vos performances sportives pour atteindre vos objectifs plus efficacement. Pour les débutants, commencez par 20 minutes d'activité modérée trois fois par semaine et augmentez progressivement l'intensité et la durée.", 'ai');
         },
         complete: () => {
           this.isTyping = false;

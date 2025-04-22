@@ -13,25 +13,26 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: #f8f9fa;
+  background-color: #FF9800;
   border-bottom: 1px solid #e9ecef;
 
   h3 {
     margin: 0;
-    color: #212529;
+    color: #ffffff;
     font-size: 1.25rem;
+    font-weight: 600;
   }
 
   .close-button {
     background: none;
     border: none;
-    color: #6c757d;
+    color: #ffffff;
     cursor: pointer;
     padding: 0.5rem;
     transition: color 0.2s;
 
     &:hover {
-      color: #dc3545;
+      color: #FFF3E0;
     }
   }
 }
@@ -43,6 +44,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  background-color: #FFF8E1;
 
   .message {
     max-width: 80%;
@@ -52,16 +54,18 @@
 
     &.user-message {
       align-self: flex-end;
-      background-color: #007bff;
+      background-color: #FF9800;
       color: white;
       border-bottom-right-radius: 0.25rem;
     }
 
     &.ai-message {
       align-self: flex-start;
-      background-color: #e9ecef;
-      color: #212529;
+      background-color: #ffffff;
+      color: #333333;
       border-bottom-left-radius: 0.25rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border: 1px solid #FFE0B2;
     }
 
     .message-content {
@@ -85,7 +89,7 @@
   span {
     width: 8px;
     height: 8px;
-    background-color: #6c757d;
+    background-color: #FF9800;
     border-radius: 50%;
     animation: typing 1s infinite ease-in-out;
 
@@ -103,30 +107,30 @@
   display: flex;
   gap: 0.5rem;
   padding: 1rem;
-  background-color: #f8f9fa;
-  border-top: 1px solid #e9ecef;
+  background-color: #ffffff;
+  border-top: 1px solid #FFE0B2;
 
   input {
     flex: 1;
     padding: 0.75rem;
-    border: 1px solid #ced4da;
+    border: 1px solid #FFE0B2;
     border-radius: 0.5rem;
     outline: none;
     transition: border-color 0.2s;
 
     &:focus {
-      border-color: #007bff;
+      border-color: #FF9800;
     }
 
     &:disabled {
-      background-color: #e9ecef;
+      background-color: #f5f5f5;
       cursor: not-allowed;
     }
   }
 
   button {
     padding: 0.75rem 1.5rem;
-    background-color: #007bff;
+    background-color: #FF9800;
     color: white;
     border: none;
     border-radius: 0.5rem;
@@ -134,11 +138,12 @@
     transition: background-color 0.2s;
 
     &:hover:not(:disabled) {
-      background-color: #0056b3;
+      background-color: #F57C00;
     }
 
     &:disabled {
-      background-color: #6c757d;
+      background-color: #FFB74D;
+      opacity: 0.7;
       cursor: not-allowed;
     }
   }
