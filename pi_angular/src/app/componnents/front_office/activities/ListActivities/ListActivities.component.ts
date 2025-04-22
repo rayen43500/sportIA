@@ -336,8 +336,14 @@ export class ListActivitiesComponent implements OnInit {
   openAIChat(): void {
     const modalElement = document.getElementById('aiChatModal');
     if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
+      const modal = new bootstrap.Modal(modalElement, {
+        backdrop: 'static',
+        keyboard: false
+      });
       modal.show();
+      console.log('Chat IA ouvert avec intégration Gemini API');
+    } else {
+      console.error('Élément modal non trouvé: aiChatModal');
     }
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GeminiApiService } from 'src/app/services/ai/gemini-api.service';
 
 interface ChatMessage {
   content: string;
@@ -19,7 +20,10 @@ export class AiChatComponent implements OnInit, AfterViewChecked {
   messages: ChatMessage[] = [];
   isTyping = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private geminiApiService: GeminiApiService
+  ) {
     this.chatForm = this.fb.group({
       message: ['', [Validators.required, Validators.minLength(1)]]
     });
@@ -27,7 +31,10 @@ export class AiChatComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     // Ajouter un message de bienvenue
-    this.addMessage('Bonjour ! Je suis votre assistant IA. Comment puis-je vous aider ?', 'ai');
+    this.addMessage('Bonjour ! Je suis votre assistant IA propulsé par Gemini. Comment puis-je vous aider ?', 'ai');
+    
+    // Démonstration de l'API Gemini au démarrage
+    this.demonstrateGeminiApi();
   }
 
   ngAfterViewChecked(): void {
@@ -49,7 +56,7 @@ export class AiChatComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     if (this.chatForm.valid) {
       const userMessage = this.chatForm.get('message')?.value.trim();
       
@@ -59,39 +66,52 @@ export class AiChatComponent implements OnInit, AfterViewChecked {
       // Réinitialiser le formulaire
       this.chatForm.reset();
       
-      // Simuler la réponse de l'IA
+      // Indiquer que l'IA est en train de répondre
       this.isTyping = true;
       
-      try {
-        // Ici, vous pouvez intégrer votre logique d'IA
-        // Pour l'instant, nous simulons une réponse après un délai
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        const aiResponse = this.generateAiResponse(userMessage);
-        this.addMessage(aiResponse, 'ai');
-      } catch (error) {
-        console.error('Erreur lors de la génération de la réponse:', error);
-        this.addMessage('Désolé, une erreur est survenue. Veuillez réessayer.', 'ai');
-      } finally {
-        this.isTyping = false;
-      }
+      // Appeler l'API Gemini via le service
+      this.geminiApiService.generateContent(userMessage).subscribe({
+        next: (response) => {
+          this.addMessage(response, 'ai');
+        },
+        error: (error) => {
+          console.error('Erreur lors de la génération de la réponse:', error);
+          this.addMessage('Désolé, une erreur est survenue. Veuillez réessayer.', 'ai');
+        },
+        complete: () => {
+          this.isTyping = false;
+        }
+      });
     }
   }
 
-  private generateAiResponse(userMessage: string): string {
-    // Cette méthode devrait être remplacée par votre logique d'IA réelle
-    const responses = [
-      "Je comprends votre demande. Laissez-moi vous aider avec cela.",
-      "C'est une excellente question ! Voici ce que je peux vous dire...",
-      "Je vais vous guider à travers ce processus.",
-      "Permettez-moi de clarifier ce point pour vous."
-    ];
+  // Démonstration de l'API Gemini au démarrage du chat
+  private demonstrateGeminiApi(): void {
+    this.isTyping = true;
     
-    return responses[Math.floor(Math.random() * responses.length)];
+    setTimeout(() => {
+      this.geminiApiService.generateContent("Explique comment fonctionne l'IA en quelques mots").subscribe({
+        next: (response) => {
+          this.addMessage(response, 'ai');
+        },
+        error: (error) => {
+          console.error('Erreur lors de la démonstration:', error);
+          this.addMessage("L'IA fonctionne en analysant des données, en identifiant des modèles et en prenant des décisions basées sur l'apprentissage automatique.", 'ai');
+        },
+        complete: () => {
+          this.isTyping = false;
+        }
+      });
+    }, 1500);
   }
 
   closeChat(): void {
-    // Implémentez la logique de fermeture du chat ici
-    // Par exemple, émettre un événement pour informer le composant parent
+    const modalElement = document.getElementById('aiChatModal');
+    if (modalElement) {
+      const bootstrapModal = (window as any).bootstrap.Modal.getInstance(modalElement);
+      if (bootstrapModal) {
+        bootstrapModal.hide();
+      }
+    }
   }
 } 
